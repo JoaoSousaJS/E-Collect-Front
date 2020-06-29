@@ -25,7 +25,7 @@ interface CityResponse {
 
 const config = {
   headers: {
-    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfZW1haWwiOiJqb2FvbG9sZXNAZ21haWwuY29tIiwiYXBpX3Rva2VuIjoiYnltNFRXWWg1ZHJMaUt3YmhFZlgwOUZDWW9QYnBFdDBQa2JvcXRGU2wwSFFVSFFaSS1IUk9QbDdOOUx6cktlWk5wcyJ9LCJleHAiOjE1OTMzNDM4NzJ9.oDzSdW5ZH9hPdDoV-9w_XzCzVSSquBGn8A6Fp567aIc",
+    Authorization: "",
     Accept: "application/json"
   }
 }
