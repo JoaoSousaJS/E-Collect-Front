@@ -26,7 +26,7 @@ interface CityResponse {
 
 const config = {
   headers: {
-    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfZW1haWwiOiJqb2FvbG9sZXNAZ21haWwuY29tIiwiYXBpX3Rva2VuIjoiYnltNFRXWWg1ZHJMaUt3YmhFZlgwOUZDWW9QYnBFdDBQa2JvcXRGU2wwSFFVSFFaSS1IUk9QbDdOOUx6cktlWk5wcyJ9LCJleHAiOjE1OTM2NTcyNTZ9.j20p30MtARRCmGAfKF6O1vW5Hc1Ia0gWzjVmm2c0M1c",
+    Authorization: "",
     Accept: "application/json"
   }
 }
@@ -73,7 +73,7 @@ const CreatePoint = () => {
     axios.get<StateResponse[]>('https://www.universal-tutorial.com/api/states/Australia', config).then(response => {
       const statesResponse = response.data.map(state => state.state_name);
       setStates(statesResponse);
-      console.log('passou')
+     
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -82,9 +82,9 @@ const CreatePoint = () => {
     axios.get<CityResponse[]>(`https://www.universal-tutorial.com/api/cities/${selectedState}`, config)
     .then(response => {
       const citiesResponse = response.data.map(city => city.city_name);
-      console.log(citiesResponse);
+     
       setCities(citiesResponse);
-      console.log('teste')
+     
     })
   
   },[selectedState])
