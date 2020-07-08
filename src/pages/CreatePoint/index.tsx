@@ -6,6 +6,7 @@ import {Map, TileLayer, Marker} from 'react-leaflet';
 import api from '../../services/api';
 import axios from 'axios';
 import { LeafletMouseEvent } from 'leaflet';
+import MyDropzone from '../../components/Dropzone/index';
 
 import logo from '../../assets/logo.svg'
 
@@ -26,7 +27,7 @@ interface CityResponse {
 
 const config = {
   headers: {
-    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfZW1haWwiOiJqb2FvbG9sZXNAZ21haWwuY29tIiwiYXBpX3Rva2VuIjoiYnltNFRXWWg1ZHJMaUt3YmhFZlgwOUZDWW9QYnBFdDBQa2JvcXRGU2wwSFFVSFFaSS1IUk9QbDdOOUx6cktlWk5wcyJ9LCJleHAiOjE1OTM2NTcyNTZ9.j20p30MtARRCmGAfKF6O1vW5Hc1Ia0gWzjVmm2c0M1c",
+    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfZW1haWwiOiJqb2FvbG9sZXNAZ21haWwuY29tIiwiYXBpX3Rva2VuIjoiYnltNFRXWWg1ZHJMaUt3YmhFZlgwOUZDWW9QYnBFdDBQa2JvcXRGU2wwSFFVSFFaSS1IUk9QbDdOOUx6cktlWk5wcyJ9LCJleHAiOjE1OTQyODk1ODN9.uirmss3BafyuIBfnAhrh3R-jw47c6up4OnTTHJKM3nU",
     Accept: "application/json"
   }
 }
@@ -49,6 +50,7 @@ const CreatePoint = () => {
   const [selectedCity, setSelectedCity] = useState('0');
   const [selectedItem, setSelectedItem] = useState<number[]>([]);
   const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
+  const [selectedFile, setSelectedFile] = useState<File>();
 
   const history = useHistory();
 
@@ -63,6 +65,7 @@ const CreatePoint = () => {
 
   useEffect(() => {
     api.get('items').then(response => {
+      console.log(response.data)
       setItems(response.data);
   
     })
@@ -131,6 +134,8 @@ const CreatePoint = () => {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+
+    
     
     const {name, email, whatsapp} = formData;
     const uf = selectedState;
@@ -138,16 +143,21 @@ const CreatePoint = () => {
     const [latitude, longitude] = selectedPosition;
     const items = selectedItem;
 
-    const data = {
-      name,
-      email,
-      whatsapp,
-      uf,
-      city,
-      latitude,
-      longitude,
-      items
-    };
+    const data = new FormData();
+
+    data.append('name', name);
+    data.append('email', email);
+    data.append('whatsapp', whatsapp);
+    data.append('uf', uf);
+    data.append('city', city);
+    data.append('latitude', String(latitude))
+    data.append('longitude', String(longitude));
+    data.append('items', items.join(','));
+    
+    if(selectedFile) {
+      data.append('image', selectedFile);
+    }
+ 
 
     await api.post('point', data);
 
@@ -171,6 +181,8 @@ const CreatePoint = () => {
 
         <form onSubmit={handleSubmit}>
           <h1>Create collect point</h1>
+
+          <MyDropzone onFileUploaded={setSelectedFile}/>
 
           <fieldset>
             <legend>
